@@ -42,7 +42,7 @@ func check(cfg *config, t *testing.T, ck *Clerk, key string, value string) {
 }
 
 // a client runs the function f and then signals it is done
-func run_client(t *testing.T, cfg *config, me int, ca chan bool, fn func(me int, ck *Clerk, t *testing.T)) {
+func run_client(t *testing.T, cfg *config, me int, ca chan<- bool, fn func(me int, ck *Clerk, t *testing.T)) {
 	ok := false
 	defer func() { ca <- ok }()
 	ck := cfg.makeClient(cfg.All())
@@ -119,7 +119,7 @@ func checkConcurrentAppends(t *testing.T, v string, counts []int) {
 }
 
 // repartition the servers periodically
-func partitioner(t *testing.T, cfg *config, ch chan bool, done *int32) {
+func partitioner(t *testing.T, cfg *config, ch chan<- bool, done *int32) {
 	defer func() { ch <- true }()
 	for atomic.LoadInt32(done) == 0 {
 		a := make([]int, cfg.n)

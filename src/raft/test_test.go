@@ -796,7 +796,7 @@ func internalChurn(t *testing.T, unreliable bool) {
 	stop := int32(0)
 
 	// create concurrent clients
-	cfn := func(me int, ch chan []int) {
+	cfn := func(me int, ch chan<- []int) {
 		var ret []int
 		ret = nil
 		defer func() { ch <- ret }()
